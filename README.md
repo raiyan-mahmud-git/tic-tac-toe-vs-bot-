@@ -1,71 +1,99 @@
-# Tic Tac Toe (GUI + AI) in Python
+# Tic-Tac-Toe with Depth-Aware Minimax AI
 
-## Overview
-This project is a Tic Tac Toe game built using Python with a graphical user interface (GUI) and an unbeatable AI opponent. The GUI is created using Tkinter, and the AI uses the Minimax algorithm, a classic decision-making algorithm in game theory.
+An enhanced, modular Python Tic-Tac-Toe application with a Tkinter graphical interface, depth-weighted Minimax AI, race-condition safe event handling, and a full automated test suite.
 
-The player plays as "X" and the AI plays as "O".
-
+---
 
 ## Features
-- Interactive GUI using Tkinter
-- Unbeatable AI (Minimax algorithm)
-- Real-time game status updates
-- Restart button to reset the game
-- Clean and simple interface
 
+- **Decoupled Architecture**: Pure Python game engine (`game_logic.py`) completely separated from the UI and AI solver, making it easily testable and extensible.
+- **Depth-Aware Minimax AI**:
+  - Scores earlier wins higher (`10 - depth`) and delays defeat (`depth - 10`).
+  - Guarantees the AI takes the fastest path to victory.
+- **Multiple Difficulty Modes**:
+  - `Unbeatable`: Mathematically perfect Minimax.
+  - `Medium`: Takes immediate wins and blocks opponent wins, mixing optimal play with occasional casual moves.
+  - `Easy`: Random moves for beginner players.
+- **Concurrency & Race-Condition Safe**:
+  - Prevents rapid double-clicks while the AI is "thinking".
+  - Explicitly cancels scheduled `root.after` callbacks upon game reset, preventing ghost moves on fresh boards.
+- **Automatic Round Restart & Persistent Scoreboard**:
+  - Automatically resets the board 1.5 seconds after any game conclusion (win, loss, or draw) so you can smoothly start the next round without manual clicks.
+  - Scores (Player X, AI O, Draws) stay completely intact across auto-restarts until you choose to click "Reset Scores".
+  - Manual "Restart Game" remains available at any time.
 
-## How It Works
-The game board is represented as a list of 9 elements. Each button in the GUI corresponds to a position on the board.
+---
 
-When the player clicks a button:
-1. The player's move ("X") is placed.
-2. The game checks if the player has won or if it's a draw.
-3. If the game continues, the AI calculates the best move using Minimax.
-4. The AI places its move ("O").
-5. The game checks again for a win or draw.
+## Project Structure
 
-The Minimax algorithm evaluates all possible future game states and always chooses the optimal move, making the AI impossible to beat.
+```
+tic_tac_toe/
+├── game_logic.py     # Core game state, rules, move validation, and win/draw detection
+├── ai.py             # Minimax algorithm with depth penalty and difficulty heuristics
+├── gui.py            # Tkinter interface with race-condition guards and score tracking
+├── main.py           # Main application entry point
+├── test_game.py      # Unit tests for game rules, winning lines, draws, and AI decisions
+├── test_gui.py       # Integration tests for Tkinter GUI, widget states, and event handling
+└── README.md         # Documentation and run instructions
+```
 
+---
 
-## Requirements
-- Python 3.x
-- Tkinter (comes pre-installed with most Python distributions)
+## Running the Game
 
+Ensure Python 3.8+ is installed with Tkinter support (standard in official Python distributions).
 
-## How to Run
-1. Download or copy the Python file.
-2. Open the file in VS Code or any Python IDE.
-3. Run the script using:
+### Launch the Application
 
-   python tic_tac_toe_ai_gui.py
+From the project directory, run:
 
+```bash
+python main.py
+```
 
-## File Structure
-- tic_tac_toe_vs_bot.py  -> Main game file
+Or run the GUI module directly:
 
+```bash
+python gui.py
+```
 
-## Controls
-- Click any empty cell to place your move (X)
-- The AI will automatically respond
-- Click "Restart" to start a new game
+---
 
+## Running Automated Tests
 
-## Future Improvements
-- Add difficulty levels (Easy, Medium, Hard)
-- Add score tracking system
-- Improve UI design (colors, animations)
-- Convert into a web application using Flask or Django
-- Deploy online for public access
+The test suite uses Python's built-in `unittest` framework with no external dependencies required.
 
+### Run All Tests (Unit + Integration)
 
-## Learning Outcomes
-This project demonstrates:
-- Python fundamentals
-- GUI programming with Tkinter
-- Game logic implementation
-- Recursion and algorithm design (Minimax)
-- Event-driven programming
+```bash
+python -m unittest discover -v
+```
 
+### Run Game Logic and AI Tests
 
-## License
-This project is open-source and free to use for learning purposes.
+```bash
+python -m unittest test_game.py -v
+```
+
+### Run GUI Integration Tests
+
+```bash
+python -m unittest test_gui.py -v
+```
+
+---
+
+## Test Coverage Summary
+
+The automated test suite tests:
+1. **Initial State**: Empty 3x3 board, Player X active, no winner, flags cleared.
+2. **Turn Transitions**: Proper switching between X and O after valid moves.
+3. **Move Validation**: Rejection of occupied cell selections and out-of-bounds indices (`ValueError`).
+4. **Game Over Enforcement**: Preventing moves once a terminal state is reached.
+5. **Winning Combinations**: Exhaustive testing of all 8 winning lines for both Player X and Player O (3 horizontal rows, 3 vertical columns, 2 diagonals).
+6. **Draw Handling**: Verification of 9-cell full-board draws without false positive winners.
+7. **Reset Integrity**: Clean restoration of all state attributes upon restart.
+8. **AI Immediate Win**: AI taking the winning cell in 1 move.
+9. **AI Threat Blocking**: AI prioritizing blocking opponent 2-in-a-row lines.
+10. **Minimax Optimality**: AI never losing in simulations against random players, and self-play between two minimax agents always producing a draw.
+11. **GUI Concurrency**: Blocking rapid multi-clicks while the AI delay is active, and canceling pending callbacks on reset.

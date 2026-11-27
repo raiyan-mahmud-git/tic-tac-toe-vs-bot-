@@ -59,8 +59,6 @@ class TestTicTacToeGame(unittest.TestCase):
 
     def test_move_after_game_over_rejected(self) -> None:
         """Verify that no moves can be made once a game has ended."""
-        # X wins on top row: 0, 1, 2
-        # Moves: X:0, O:3, X:1, O:4, X:2 (win)
         moves = [0, 3, 1, 4, 2]
         for m in moves:
             self.game.make_move(m)
@@ -78,15 +76,11 @@ class TestTicTacToeGame(unittest.TestCase):
         for combo in WINNING_COMBINATIONS:
             with self.subTest(combo=combo):
                 game = TicTacToeGame()
-                # Find two non-interfering cells for O
                 non_combo = [i for i in range(9) if i not in combo]
-                # X moves to combo[0], O moves to non_combo[0]
                 game.make_move(combo[0])
                 game.make_move(non_combo[0])
-                # X moves to combo[1], O moves to non_combo[1]
                 game.make_move(combo[1])
                 game.make_move(non_combo[1])
-                # X moves to combo[2] (winning move)
                 game.make_move(combo[2])
 
                 self.assertTrue(game.game_over)
@@ -103,7 +97,6 @@ class TestTicTacToeGame(unittest.TestCase):
                 game = TicTacToeGame()
                 non_combo = [i for i in range(9) if i not in combo]
 
-                # Select 3 cells for X that do NOT form a winning line
                 x_moves = None
                 for triplet in itertools.combinations(non_combo, 3):
                     triplet_set = set(triplet)
@@ -113,13 +106,10 @@ class TestTicTacToeGame(unittest.TestCase):
 
                 self.assertIsNotNone(x_moves, f"Could not find non-winning moves for X with combo {combo}")
 
-                # X: x_moves[0], O: combo[0]
                 game.make_move(x_moves[0])
                 game.make_move(combo[0])
-                # X: x_moves[1], O: combo[1]
                 game.make_move(x_moves[1])
                 game.make_move(combo[1])
-                # X: x_moves[2], O: combo[2] (winning move for O)
                 game.make_move(x_moves[2])
                 game.make_move(combo[2])
 
@@ -130,10 +120,6 @@ class TestTicTacToeGame(unittest.TestCase):
 
     def test_draw_condition(self) -> None:
         """Verify full board draw without a winner."""
-        # Board layout for draw:
-        # X O X
-        # X O O
-        # O X X
         moves = [0, 1, 2, 4, 3, 5, 7, 6, 8]
         for m in moves:
             self.game.make_move(m)
@@ -175,7 +161,6 @@ class TestTicTacToeAI(unittest.TestCase):
     def test_ai_takes_immediate_winning_move(self) -> None:
         """AI (O) must immediately complete a winning line when available."""
         game = TicTacToeGame()
-        # O has 0 and 1; cell 2 is winning move
         game.board = [
             PLAYER_O, PLAYER_O, EMPTY,
             PLAYER_X, PLAYER_X, EMPTY,
@@ -187,7 +172,6 @@ class TestTicTacToeAI(unittest.TestCase):
     def test_ai_blocks_immediate_opponent_win(self) -> None:
         """AI (O) must block opponent (X) when opponent has 2 in a row."""
         game = TicTacToeGame()
-        # X has 0 and 1; cell 2 must be blocked
         game.board = [
             PLAYER_X, PLAYER_X, EMPTY,
             PLAYER_O, EMPTY,    EMPTY,
@@ -199,7 +183,6 @@ class TestTicTacToeAI(unittest.TestCase):
     def test_depth_preference_faster_win(self) -> None:
         """Minimax must choose the 1-move win over a 2-move win."""
         game = TicTacToeGame()
-        # O can win immediately at index 2
         game.board = [
             PLAYER_O, PLAYER_O, EMPTY,
             PLAYER_X, PLAYER_X, EMPTY,
@@ -248,7 +231,7 @@ class TestTicTacToeAI(unittest.TestCase):
     def test_difficulty_modes_return_valid_moves(self) -> None:
         """Ensure all difficulty modes return legal moves on an open board."""
         game = TicTacToeGame()
-        game.make_move(0)  # Human move
+        game.make_move(0)
 
         for diff in ["easy", "medium", "unbeatable"]:
             move = get_ai_move(game, difficulty=diff, ai_player=PLAYER_O)

@@ -17,19 +17,18 @@ from typing import List, Optional
 from game_logic import EMPTY, PLAYER_O, PLAYER_X, TicTacToeGame
 from ai import get_ai_move
 
-# UI Timing and Color Palette Constants
 AI_DELAY_MS = 300
 AUTO_RESTART_DELAY_MS = 1500
-COLOR_X = "#1565C0"           # Strong Blue
-COLOR_O = "#C62828"           # Strong Red
-COLOR_WIN_BG = "#C8E6C9"      # Soft Green highlight for winning line
-COLOR_DEFAULT_BG = "#F5F5F5"  # Default button background
-COLOR_BOARD_BG = "#B0BEC5"    # Grid border background
-COLOR_TEXT_MAIN = "#212121"   # Primary text color
-COLOR_TEXT_MUTED = "#757575"  # Muted text for thinking state
-COLOR_TEXT_SUBTLE = "#333333" # Score text color
-COLOR_WIN_TEXT = "#2E7D32"    # Win banner color
-COLOR_DRAW_TEXT = "#E65100"   # Draw banner color
+COLOR_X = "#1565C0"
+COLOR_O = "#C62828"
+COLOR_WIN_BG = "#C8E6C9"
+COLOR_DEFAULT_BG = "#F5F5F5"
+COLOR_BOARD_BG = "#B0BEC5"
+COLOR_TEXT_MAIN = "#212121"
+COLOR_TEXT_MUTED = "#757575"
+COLOR_TEXT_SUBTLE = "#333333"
+COLOR_WIN_TEXT = "#2E7D32"
+COLOR_DRAW_TEXT = "#E65100"
 
 FONT_BUTTON = ("Arial", 22, "bold")
 FONT_STATUS = ("Arial", 13, "bold")
@@ -50,19 +49,15 @@ class TicTacToeGUI:
         self.root.title("Tic Tac Toe (AI)")
         self.root.resizable(False, False)
 
-        # Core Engine and State
         self.game = TicTacToeGame()
         self.is_ai_thinking: bool = False
         self._pending_ai_after_id: Optional[str] = None
         self._pending_restart_after_id: Optional[str] = None
 
-        # Scores
         self.scores = {PLAYER_X: 0, PLAYER_O: 0, "draws": 0}
 
-        # Difficulty setting
         self.difficulty_var = tk.StringVar(value="unbeatable")
 
-        # Widget storage
         self.buttons: List[tk.Button] = []
         self.score_label: tk.Label
         self.status_label: tk.Label
@@ -242,7 +237,6 @@ class TicTacToeGUI:
 
         self._update_score_display()
 
-        # Schedule automatic restart while keeping cumulative scores intact
         self._pending_restart_after_id = self.root.after(
             AUTO_RESTART_DELAY_MS, self.reset_game
         )

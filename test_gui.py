@@ -13,12 +13,10 @@ class TestTicTacToeGUI(unittest.TestCase):
 
     def setUp(self) -> None:
         self.root = tk.Tk()
-        # Withdraw the window so it doesn't pop up during automated tests
         self.root.withdraw()
         self.app = TicTacToeGUI(root=self.root)
 
     def tearDown(self) -> None:
-        # Clean up scheduled timers and destroy window
         if self.app._pending_ai_after_id:
             self.root.after_cancel(self.app._pending_ai_after_id)
         if self.app._pending_restart_after_id:
@@ -46,9 +44,7 @@ class TestTicTacToeGUI(unittest.TestCase):
     def test_double_click_race_condition_blocked(self) -> None:
         """Clicking another cell while AI is thinking must be ignored."""
         self.app.on_cell_clicked(0)
-        # Attempt second click while thinking is True
         self.app.on_cell_clicked(1)
-        # Cell 1 must remain empty
         self.assertEqual(self.app.buttons[1].cget("text"), "")
         self.assertEqual(self.app.buttons[1].cget("state"), "normal")
 
@@ -66,28 +62,22 @@ class TestTicTacToeGUI(unittest.TestCase):
     def test_ai_execution(self) -> None:
         """Simulate execution of AI turn."""
         self.app.on_cell_clicked(0)
-        # Manually trigger the scheduled AI callback
         self.app._execute_ai_turn()
 
-        # An 'O' should have been placed on the board
         o_count = sum(1 for btn in self.app.buttons if btn.cget("text") == "O")
         self.assertEqual(o_count, 1)
         self.assertFalse(self.app.is_ai_thinking)
 
     def test_auto_restart_scheduled_on_game_conclusion_and_preserves_scores(self) -> None:
         """Game conclusion schedules auto-restart and preserves cumulative scores."""
-        # Force a winning condition for Player X (cells 0, 1, 2)
         self.app.game.board = ["X", "X", "", "O", "O", "", "", "", ""]
-        self.app.on_cell_clicked(2)  # Winning move for X
-
+        self.app.on_cell_clicked(2)
         self.assertTrue(self.app.game.game_over)
         self.assertEqual(self.app.scores[PLAYER_X], 1)
         self.assertIsNotNone(self.app._pending_restart_after_id)
 
-        # Trigger the scheduled reset
         self.app.reset_game()
 
-        # Board is cleared, but score remains 1
         self.assertEqual(self.app.scores[PLAYER_X], 1)
         self.assertEqual(self.app.buttons[0].cget("text"), "")
         self.assertEqual(self.app.buttons[0].cget("state"), "normal")

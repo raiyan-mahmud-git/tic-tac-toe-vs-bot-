@@ -55,7 +55,6 @@ def minimax(
 
         score = minimax(game, depth + 1, not is_maximizing, ai_player, human_player)
 
-        # Undo move
         game.board[move] = EMPTY
         game.winner = None
         game.winning_line = None
@@ -91,7 +90,6 @@ def find_best_move(game: TicTacToeGame, ai_player: str = PLAYER_O) -> Optional[i
 
         score = minimax(game, 0, False, ai_player, human_player)
 
-        # Undo move
         game.board[move] = EMPTY
         game.winner = None
         game.winning_line = None
@@ -116,7 +114,6 @@ def _find_immediate_winning_move(game: TicTacToeGame, player: str) -> Optional[i
         game.board[move] = player
         game._evaluate_game_state()
         has_won = game.winner == player
-        # Undo move
         game.board[move] = EMPTY
         game.winner = None
         game.winning_line = None
@@ -135,17 +132,14 @@ def _get_medium_move(
     """Tactical heuristic for medium difficulty."""
     human_player = PLAYER_X if ai_player == PLAYER_O else PLAYER_O
 
-    # 1. Immediate win
     win_move = _find_immediate_winning_move(game, ai_player)
     if win_move is not None:
         return win_move
 
-    # 2. Block opponent's win
     block_move = _find_immediate_winning_move(game, human_player)
     if block_move is not None:
         return block_move
 
-    # 3. Mix optimal play with randomness
     if random.random() < 0.6:
         best = find_best_move(game, ai_player)
         if best is not None:

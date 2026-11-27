@@ -57,6 +57,22 @@ Or run the GUI module directly:
 python gui.py
 ```
 
+## Browser Version (GitHub Pages)
+
+The `docs/` folder contains a browser version of the game. It uses the same
+depth-aware Minimax approach and difficulty modes as the Tkinter app, and runs
+entirely in each visitor's browser.
+
+To publish it for free from this public GitHub repository:
+
+1. Open the repository's **Settings → Pages**.
+2. Under **Build and deployment**, choose **Deploy from a branch**.
+3. Select the `main` branch and the `/docs` folder, then save.
+4. Once GitHub Pages finishes its first deployment, the site will be available at:
+   `https://raiyan-mahmud-git.github.io/tic-tac-toe-vs-bot-/`
+
+The Python desktop app remains available through `python main.py`.
+
 ---
 
 ## Running Automated Tests

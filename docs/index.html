@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Play a quick game of Tic-Tac-Toe against a depth-aware Minimax AI.">
+  <title>Tic-Tac-Toe vs. AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Tic-Tac-Toe home"><span class="brand-mark">T<span>/</span>O</span><span>PLAY<span class="brand-muted">ROOM</span></span></a>
+      <a class="source-link" href="https://github.com/raiyan-mahmud-git/tic-tac-toe-vs-bot-" target="_blank" rel="noreferrer">View source <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <section class="game-layout" aria-labelledby="game-title">
+      <div class="intro">
+        <p class="eyebrow"><span class="pulse"></span> PLAYER VS. COMPUTER</p>
+        <h1 id="game-title">Tic-Tac-Toe<span class="title-dot">.</span></h1>
+        <p class="subtitle">A classic game. A clever opponent.</p>
+      </div>
+
+      <section class="game-card" aria-label="Tic-Tac-Toe game">
+        <div class="game-toolbar">
+          <div class="scoreboard" aria-label="Score">
+            <div class="score-item"><span class="score-symbol x-text">X</span><span class="score-name">YOU</span><strong id="score-x">0</strong></div>
+            <span class="score-divider" aria-hidden="true"></span>
+            <div class="score-item"><span class="score-symbol o-text">O</span><span class="score-name">AI</span><strong id="score-o">0</strong></div>
+            <span class="score-divider" aria-hidden="true"></span>
+            <div class="score-item draw-score"><span class="score-name">DRAWS</span><strong id="score-draw">0</strong></div>
+          </div>
+          <label class="difficulty-wrap" for="difficulty"><span>LEVEL</span>
+            <select id="difficulty" aria-label="Choose difficulty">
+              <option value="unbeatable">Unbeatable</option>
+              <option value="medium">Medium</option>
+              <option value="easy">Easy</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="status-row" aria-live="polite" aria-atomic="true">
+          <span id="status-mark" class="status-mark x-text">X</span>
+          <span id="status">Your turn</span>
+          <span id="thinking-indicator" class="thinking-indicator" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+
+        <div id="board" class="board" role="group" aria-label="Game board">
+          <button class="cell" type="button" data-cell="0" aria-label="Row 1, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="1" aria-label="Row 1, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="2" aria-label="Row 1, column 3, empty"></button>
+          <button class="cell" type="button" data-cell="3" aria-label="Row 2, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="4" aria-label="Row 2, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="5" aria-label="Row 2, column 3, empty"></button>
+          <button class="cell" type="button" data-cell="6" aria-label="Row 3, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="7" aria-label="Row 3, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="8" aria-label="Row 3, column 3, empty"></button>
+        </div>
+
+        <div class="actions">
+          <button id="restart" class="button button-primary" type="button"><span aria-hidden="true">↻</span> New round</button>
+          <button id="reset-scores" class="button button-quiet" type="button">Reset scores</button>
+        </div>
+      </section>
+
+      <p class="note"><span aria-hidden="true">✦</span> Unbeatable mode uses depth-aware Minimax. Can you force a draw?</p>
+    </section>
+    <footer>MADE FOR ONE MORE ROUND <span>·</span> RUNS IN YOUR BROWSER</footer>
+  </main>
+</body>
+</html>

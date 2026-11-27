@@ -9,7 +9,7 @@ button,select{font:inherit}
 .brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.17em}
 .brand-mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:10px;font-size:14px;letter-spacing:-.08em}.brand-mark span{color:var(--cyan)}.brand-muted{color:var(--muted)}
 .source-link{font-size:12px;color:var(--muted);text-decoration:none}.source-link:hover{color:var(--cyan)}.source-link span{margin-left:4px}
-.game-layout{width:min(100%,470px);margin:auto;display:flex;flex-direction:column;align-items:stretch;padding:30px 0 34px}
+.game-layout{width:min(100%,470px);margin:auto;display:flex;flex-direction:column;align-items:stretch;padding:30px 0 34px;transform:translateY(-48px)}
 .intro{text-align:center;margin-bottom:25px}.eyebrow{font:10px var(--mono);letter-spacing:.18em;color:var(--muted);display:flex;justify-content:center;align-items:center;gap:9px;margin:0 0 12px}.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px #62e5cf88}
 h1{font-size:clamp(34px,7vw,47px);line-height:1.1;letter-spacing:-.055em;margin:0;font-weight:800}.title-dot{color:var(--cyan)}.subtitle{margin:9px 0 0;color:var(--muted);font-size:14px}
 .game-card{background:linear-gradient(155deg,#1b273b,#172235);border:1px solid #304057;border-radius:20px;padding:20px;box-shadow:0 24px 70px #060b1470, inset 0 1px #ffffff08}

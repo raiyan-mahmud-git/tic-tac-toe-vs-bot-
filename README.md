@@ -1,115 +1,76 @@
-# Tic-Tac-Toe with Depth-Aware Minimax AI
+# Tic-Tac-Toe vs. Minimax AI
 
-An enhanced, modular Python Tic-Tac-Toe application with a Tkinter graphical interface, depth-weighted Minimax AI, race-condition safe event handling, and a full automated test suite.
+A Tic-Tac-Toe game with two interfaces: a Python desktop app built with Tkinter and a browser version built with HTML, CSS, and JavaScript. Both versions include three difficulty levels and a depth-aware Minimax opponent.
 
----
+## Play in a browser
 
-## Features
+The browser app is in [`docs/`](docs/). It runs entirely in the visitor's browser; it does not need a Python server, database, or other backend.
 
-- **Decoupled Architecture**: Pure Python game engine (`game_logic.py`) completely separated from the UI and AI solver, making it easily testable and extensible.
-- **Depth-Aware Minimax AI**:
-  - Scores earlier wins higher (`10 - depth`) and delays defeat (`depth - 10`).
-  - Guarantees the AI takes the fastest path to victory.
-- **Multiple Difficulty Modes**:
-  - `Unbeatable`: Mathematically perfect Minimax.
-  - `Medium`: Takes immediate wins and blocks opponent wins, mixing optimal play with occasional casual moves.
-  - `Easy`: Random moves for beginner players.
-- **Concurrency & Race-Condition Safe**:
-  - Prevents rapid double-clicks while the AI is "thinking".
-  - Explicitly cancels scheduled `root.after` callbacks upon game reset, preventing ghost moves on fresh boards.
-- **Automatic Round Restart & Persistent Scoreboard**:
-  - Automatically resets the board 1.5 seconds after any game conclusion (win, loss, or draw) so you can smoothly start the next round without manual clicks.
-  - Scores (Player X, AI O, Draws) stay completely intact across auto-restarts until you choose to click "Reset Scores".
-  - Manual "Restart Game" remains available at any time.
+If GitHub Pages is enabled, play it here:
 
----
+**[Play Tic-Tac-Toe](https://raiyan-mahmud-git.github.io/tic-tac-toe-vs-bot-/)**
 
-## Project Structure
+The browser version includes:
 
-```
-tic_tac_toe/
-├── game_logic.py     # Core game state, rules, move validation, and win/draw detection
-├── ai.py             # Minimax algorithm with depth penalty and difficulty heuristics
-├── gui.py            # Tkinter interface with race-condition guards and score tracking
-├── main.py           # Main application entry point
-├── test_game.py      # Unit tests for game rules, winning lines, draws, and AI decisions
-├── test_gui.py       # Integration tests for Tkinter GUI, widget states, and event handling
-└── README.md         # Documentation and run instructions
-```
+- **Unbeatable** — depth-aware Minimax searches the remaining game and plays optimally.
+- **Medium** — takes immediate wins and blocks immediate losses, otherwise mixes optimal and random moves.
+- **Easy** — chooses a random available square.
+- Score tracking, difficulty selection, automatic round restart, and manual controls to start a new round or reset scores.
 
----
+### Enable or update GitHub Pages
 
-## Running the Game
+For a GitHub Free account, the repository needs to be public to use Pages. In the repository settings:
 
-Ensure Python 3.8+ is installed with Tkinter support (standard in official Python distributions).
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, set the source to **Deploy from a branch**.
+3. Select branch **`main`** and folder **`/docs`**, then save.
+4. GitHub publishes the site at `https://raiyan-mahmud-git.github.io/tic-tac-toe-vs-bot-/`.
 
-### Launch the Application
+Future pushes to `main` update the site. A first deployment or update can take several minutes.
 
-From the project directory, run:
+## Run the desktop app
+
+Install Python 3.8 or later with Tkinter support, then run from the project directory:
 
 ```bash
 python main.py
 ```
 
-Or run the GUI module directly:
+You can also start the interface directly:
 
 ```bash
 python gui.py
 ```
 
-## Browser Version (GitHub Pages)
+## Run the Python tests
 
-The `docs/` folder contains a browser version of the game. It uses the same
-depth-aware Minimax approach and difficulty modes as the Tkinter app, and runs
-entirely in each visitor's browser.
-
-To publish it for free from this public GitHub repository:
-
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select the `main` branch and the `/docs` folder, then save.
-4. Once GitHub Pages finishes its first deployment, the site will be available at:
-   `https://raiyan-mahmud-git.github.io/tic-tac-toe-vs-bot-/`
-
-The Python desktop app remains available through `python main.py`.
-
----
-
-## Running Automated Tests
-
-The test suite uses Python's built-in `unittest` framework with no external dependencies required.
-
-### Run All Tests (Unit + Integration)
+The Python test suite uses the standard-library `unittest` framework:
 
 ```bash
 python -m unittest discover -v
 ```
 
-### Run Game Logic and AI Tests
+Or run one test module:
 
 ```bash
 python -m unittest test_game.py -v
-```
-
-### Run GUI Integration Tests
-
-```bash
 python -m unittest test_gui.py -v
 ```
 
----
+The tests cover game rules, move validation, win and draw detection, resets, AI choices, GUI behavior, and scheduled AI callbacks.
 
-## Test Coverage Summary
+## Project structure
 
-The automated test suite tests:
-1. **Initial State**: Empty 3x3 board, Player X active, no winner, flags cleared.
-2. **Turn Transitions**: Proper switching between X and O after valid moves.
-3. **Move Validation**: Rejection of occupied cell selections and out-of-bounds indices (`ValueError`).
-4. **Game Over Enforcement**: Preventing moves once a terminal state is reached.
-5. **Winning Combinations**: Exhaustive testing of all 8 winning lines for both Player X and Player O (3 horizontal rows, 3 vertical columns, 2 diagonals).
-6. **Draw Handling**: Verification of 9-cell full-board draws without false positive winners.
-7. **Reset Integrity**: Clean restoration of all state attributes upon restart.
-8. **AI Immediate Win**: AI taking the winning cell in 1 move.
-9. **AI Threat Blocking**: AI prioritizing blocking opponent 2-in-a-row lines.
-10. **Minimax Optimality**: AI never losing in simulations against random players, and self-play between two minimax agents always producing a draw.
-11. **GUI Concurrency**: Blocking rapid multi-clicks while the AI delay is active, and canceling pending callbacks on reset.
+```text
+├── ai.py             # Python Minimax AI and difficulty modes
+├── game_logic.py     # Python game rules and state
+├── gui.py            # Tkinter desktop interface
+├── main.py           # Desktop app entry point
+├── test_game.py      # Game logic and AI tests
+├── test_gui.py       # Tkinter interface tests
+├── docs/
+│   ├── index.html    # Browser app page
+│   ├── styles.css    # Browser app layout and styling
+│   └── game.js       # Browser game logic and AI
+└── README.md
+```
